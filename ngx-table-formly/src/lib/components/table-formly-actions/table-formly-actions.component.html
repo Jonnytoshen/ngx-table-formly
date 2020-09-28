@@ -1,0 +1,24 @@
+<ng-container *ngFor="let action of actions">
+  <ng-container *ngIf="action.children; else actionTpl">
+    <nz-button-group [nzSize]="action?.size">
+      <ng-container *ngFor="let button of action.children">
+        <ng-template [ngTemplateOutlet]="buttonTpl" [ngTemplateOutletContext]="{$implicit: button}"></ng-template>
+      </ng-container>
+    </nz-button-group>
+  </ng-container>
+  <ng-template #actionTpl>
+    <ng-template [ngTemplateOutlet]="buttonTpl" [ngTemplateOutletContext]="{$implicit: action}"></ng-template>
+  </ng-template>
+</ng-container>
+
+<ng-template #buttonTpl let-action>
+  <button
+  type="button"
+  nz-button
+  [nzGhost]="action?.ghost"
+  [nzShape]="action?.shape"
+  [nzSize]="action?.size"
+  [nzType]="action?.type"
+  [nzDanger]="action?.danger"
+  (click)="onClickAction(action, $event)">{{ action?.text }}</button>
+</ng-template>

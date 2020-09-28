@@ -1,0 +1,43 @@
+@ngx-table-formly-prefix-cls: ~"ngx-table-formly";
+
+.@{ngx-table-formly-prefix-cls} {
+
+  &-actions {
+    display: block;
+
+    &-top {
+      margin-bottom: 16px;
+    }
+
+    &-bottom {
+      margin-top: 16px;
+    }
+
+    & > nz-button-group,
+    & > button {
+      margin-right: 8px;
+    }
+  }
+
+  &-cell-editon {
+    vertical-align: top;
+  }
+
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+
+  .ant-table-thead > .ant-table-row > .ant-table-cell {
+    vertical-align: top;
+
+    & > span {
+      display: block;
+    }
+
+    & > span.@{ngx-table-formly-prefix-cls}-head-des {
+      font-size: 14px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, .45);
+    }
+  }
+}

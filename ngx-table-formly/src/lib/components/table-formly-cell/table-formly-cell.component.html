@@ -1,0 +1,76 @@
+<nz-form-item *ngIf="editOn; else contentTpl">
+  <nz-form-control [nzErrorTip]="showValidationMessage ? validationMessageTpl : null">
+    <ng-container [ngSwitch]="true">
+      <ng-container *ngSwitchCase="type === 'checkbox'">
+        <label nz-checkbox [formControl]="control"></label>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'date' || type === 'datetime'">
+        <nz-date-picker
+        [formControl]="control"
+        [nzSize]="size"
+        [nzPlaceHolder]="placeholder"
+        [nzFormat]="dateFormat"
+        [nzShowTime]="type === 'datetime'"></nz-date-picker>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'input'">
+        <input type="text" nz-input [formControl]="control" [nzSize]="size" [placeholder]="placeholder">
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'inputNumber'">
+        <nz-input-number [formControl]="control" [nzSize]="size"></nz-input-number>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'textarea'">
+        <textarea nz-input [formControl]="control" [rows]="rows"></textarea>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'radio'">
+        <nz-radio-group [formControl]="control">
+          <ng-container *ngFor="let option of selectList">
+            <label nz-radio [nzValue]="option.value">{{ option.label }}</label>
+          </ng-container>
+        </nz-radio-group>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'select'">
+        <nz-select [formControl]="control" [nzSize]="size" [nzPlaceHolder]="placeholder">
+          <ng-container *ngFor="let option of selectList">
+            <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </ng-container>
+        </nz-select>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'switch'">
+        <nz-switch [formControl]="control" [nzSize]="size"></nz-switch>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'time'">
+        <nz-time-picker
+        [formControl]="control"
+        [nzSize]="size"
+        [nzPlaceHolder]="placeholder"
+        [nzFormat]="dateFormat"></nz-time-picker>
+      </ng-container>
+      <ng-container *ngSwitchCase="type === 'password'">
+        <nz-input-group [nzSuffix]="passwordSuffix">
+          <input
+          [type]="passwordVisible ? 'text' : 'password'"
+          [formControl]="control"
+          nz-input
+          [nzSize]="size"
+          [placeholder]="placeholder">
+        </nz-input-group>
+        <ng-template #passwordSuffix>
+          <i nz-icon
+          [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+          (click)="passwordVisible = !passwordVisible"></i>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </nz-form-control>
+
+  <ng-template #validationMessageTpl let-control>
+    <ngx-table-formly-validation-message [control]="control"></ngx-table-formly-validation-message>
+  </ng-template>
+</nz-form-item>
+
+<ng-template #contentTpl>
+  <ng-container [ngSwitch]="true">
+    <ng-container *ngSwitchCase="type === 'date' || type ==='datetime' || type === 'time'">{{ control.value | date: cellDateFormat }}</ng-container>
+    <ng-container *ngSwitchDefault>{{ control.value }}</ng-container>
+  </ng-container>
+</ng-template>

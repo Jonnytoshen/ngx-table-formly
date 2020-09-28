@@ -1,0 +1,80 @@
+<div class="table-forms">
+  <ng-container *ngIf="isShowActions && (actionsPosition === 'top' || actionsPosition === 'both')">
+    <ngx-table-formly-actions
+    class="table-forms-actions table-forms-actions-top"
+    [actions]="actions"
+    (actionClick)="actionClickHandle($event)"></ngx-table-formly-actions>
+  </ng-container>
+  <nz-table
+  [nzData]="tableRows"
+  [nzBordered]="tableBordered"
+  [nzLoading]="isLoading"
+  [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <ng-container *ngFor="let column of columns">
+          <ng-container *ngIf="!column.hidden">
+            <ng-container *ngIf="column.head as head; else emptyHeadTpl">
+              <th [nzWidth]="column.width" [nzAlign]="head.align">
+                <span>{{ head.title }}</span>
+                <span class="table-forms-head-des" *ngIf="head.description">{{ head.description }}</span>
+              </th>
+            </ng-container>
+            <ng-template #emptyHeadTpl>
+              <th [nzWidth]="column.width"></th>
+            </ng-template>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let tableRow of tableRows; let index = index">
+        <tr>
+          <ng-container *ngFor="let options of columns">
+            <td
+            *ngIf="!options.hidden"
+            [class.table-forms-cell-editon]="tableRow.editOn"
+            [nzAlign]="options.cellAlign">
+              <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="options.type === 'operation'">
+                  <ng-template [ngTemplateOutlet]="operationCellTpl"></ng-template>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <ngx-table-formly-cell
+                  [control]="tableRow.formGroup.get(options.key)"
+                  [column]="options"
+                  [editOn]="tableRow.editOn"
+                  [showValidationMessage]="showValidationMessage"></ngx-table-formly-cell>
+                </ng-container>
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <ng-template #operationCellTpl>
+            <ng-container *ngIf="tableRow.editOn">
+              <a (click)="saveFormsRow(tableRow)">保存</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <ng-container *ngIf="tableRow.isNew">
+                <a (click)="removeFormsRow(tableRow, index)">删除</a>
+              </ng-container>
+              <ng-container *ngIf="!tableRow.isNew">
+                <a (click)="tableRow.cancel()">取消</a>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="!tableRow.editOn">
+              <a (click)="tableRow.editOn = true">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="removeFormsRow(tableRow, index)">删除</a>
+            </ng-container>
+          </ng-template>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+  <ng-container *ngIf="isShowActions && (actionsPosition === 'bottom' || actionsPosition === 'both')">
+    <ngx-table-formly-actions
+    class="table-forms-actions table-forms-actions-bottom"
+    [actions]="actions"
+    (actionClick)="actionClickHandle($event)"></ngx-table-formly-actions>
+  </ng-container>
+</div>

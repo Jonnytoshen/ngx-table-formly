@@ -1,0 +1,10 @@
+{
+  "name": "ngx-table-formly",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "ng-zorro-antd": ">=9.3.0"
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
+  }
+}
